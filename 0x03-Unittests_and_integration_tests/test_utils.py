@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+This module contains the test cases for the utils module
+"""
 from utils import memoize
 import utils
 import unittest
