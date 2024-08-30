@@ -1,36 +1,40 @@
 #!/usr/bin/env python3
-import unittest 
+"""
+This modules contains tests for client.py file.
+"""
+import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
-import client 
+import client
+
 
 class TestGithubOrgClient(unittest.TestCase):
     """
-    This is a git
+    This is a class to test the GithubOrgClient class.
     """
     @parameterized.expand([
-        ( "google", "google company"),
+        ("google", "google company"),
         ("abc", "abc company"),
     ])
+    # I imported the get_json from client.py to patch it in the test method
     @patch.object(client, 'get_json')
-    def test_org(self, company, company_name , mock_get):
+    def test_org(self, company, company_name, mock_get):
         """
+        This test memoization and mocking in the org method of GithubOrgClient.
         """
-        # with patch.object('get_json')
         mock_response = Mock()
         mock_response.return_value = company_name
         mock_get.return_value = mock_response
-
+        # Creates an instance of the GithubOrgClient class
         organization = client.GithubOrgClient(company)
         # print(organization)
+        # I got the full htpps url of the Organisation
         url_name = (organization.ORG_URL.format(org=company))
-        # print(url_name)
+        # Called the org method twice to show memoization
         result1 = organization.org()
         result2 = organization.org()
-        # print(result)
+        # See if the mock_get (get_json) is truly called once.
         mock_get.assert_called_once_with(url_name)
-        # print("hereeee")
-        # print(result1)
+        # Check if the results are equal to the company_name
         self.assertEqual(result1, company_name)
         self.assertEqual(result2, company_name)
-
