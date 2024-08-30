@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 from utils import memoize
-import utils 
+import utils
 import unittest
 from parameterized import parameterized
 from unittest.mock import patch, Mock
 import requests
-import test_utils
+# import test_utils
+
 
 class TestAccessNestedMap(unittest.TestCase):
     """
@@ -18,7 +19,8 @@ class TestAccessNestedMap(unittest.TestCase):
     def test_access_nested_map(self, nested_map, path, expected_output):
         """
         """
-        self.assertEqual(utils.access_nested_map(nested_map, path), expected_output)
+        self.assertEqual(utils.access_nested_map(
+            nested_map, path), expected_output)
 
     @parameterized.expand([
         ({}, ("a",)),
@@ -36,7 +38,7 @@ class TestGetJson(unittest.TestCase):
     """
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
-        ("http://holberton.io", {"payload": False}),  
+        ("http://holberton.io", {"payload": False}),
     ])
     @patch('requests.get')
     def test_get_json(self, test_url, test_payload, mock_get):
@@ -48,22 +50,24 @@ class TestGetJson(unittest.TestCase):
 
         result = utils.get_json(test_url)
         """
-            >>You should check the below first because it verifies that mock_get was used correctly.
-            If this assertion fails, it means the get_json function did not call mock_get as expected
-            and the subsequent assertion about the result may be irrelevant.
+        You should check `below` first because it verifies that mock_get
+        was used correctly.If this assertion fails, it means the get_json
+        function did not call mock_get as expected
+        and the subsequent assertion about the result may be irrelevant.
         """
         mock_get.assert_called_once_with(test_url)
         """
-        >> If the mock interaction is correct, then you can be more confident 
-            that any failure in the result assertion 
+        >> If the mock interaction is correct, then you can be more confident
+            that any failure in the result assertion
             is related to the function’s logic or result handling.
         """
         self.assertEqual(result, test_payload)
 
+
 class TestMemoize(unittest.TestCase):
     """
     """
-    print(dir(test_utils))
+    # print(dir(test_utils))
     # @patch.object(TestMemoize,'a_method',wraps=None)
     def test_memoize(self):
         """
@@ -72,7 +76,7 @@ class TestMemoize(unittest.TestCase):
 
             def a_method(self):
                 return 42
-            # @patch(a_method)
+
             @memoize
             def a_property(self):
                 return self.a_method()
@@ -86,7 +90,7 @@ class TestMemoize(unittest.TestCase):
             mock_get.assert_called_once()
             self.assertEqual(result1, mock_response.return_value)
             self.assertEqual(result2, mock_response.return_value)
-        
+
 
 if __name__ == "__main__":
     unittest.main()
