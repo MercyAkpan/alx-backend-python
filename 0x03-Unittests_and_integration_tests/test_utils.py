@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
+from utils import memoize
 import utils 
 import unittest
 from parameterized import parameterized
 from unittest.mock import patch, Mock
 import requests
+import test_utils
 
 class TestAccessNestedMap(unittest.TestCase):
     """
@@ -58,6 +60,33 @@ class TestGetJson(unittest.TestCase):
         """
         self.assertEqual(result, test_payload)
 
+class TestMemoize(unittest.TestCase):
+    """
+    """
+    print(dir(test_utils))
+    # @patch.object(TestMemoize,'a_method',wraps=None)
+    def test_memoize(self):
+        """
+        """
+        class TestClass():
 
-    if __name__ == "__main__":
-        unittest.main()
+            def a_method(self):
+                return 42
+            # @patch(a_method)
+            @memoize
+            def a_property(self):
+                return self.a_method()
+        with patch.object(TestClass, 'a_method')as mock_get:
+            mock_response = Mock()
+            mock_response.return_value = 42
+            mock_get.return_value = mock_response
+            result = TestClass()
+            result1 = result.a_property()
+            result2 = result.a_property()
+            mock_get.assert_called_once()
+            self.assertEqual(result1, mock_response.return_value)
+            self.assertEqual(result2, mock_response.return_value)
+        
+
+if __name__ == "__main__":
+    unittest.main()
