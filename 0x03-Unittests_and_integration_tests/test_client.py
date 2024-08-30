@@ -38,3 +38,6 @@ class TestGithubOrgClient(unittest.TestCase):
         # Check if the results are equal to the company_name
         self.assertEqual(result1, company)
         self.assertEqual(result2, company)
+
+if __name__ == "__main__":
+    unittest.main()
