@@ -17,7 +17,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc", "abc_company"),
     ])
     # I imported the get_json from client.py to patch it in the test method
-    @patch('client.get_json')
+    @patch.object(client, 'get_json')
     def test_org(self, company, company_name, mock_get):
         """
         This test memoization and mocking in the org method of GithubOrgClient.
