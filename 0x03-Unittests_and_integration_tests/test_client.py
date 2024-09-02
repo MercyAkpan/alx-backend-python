@@ -5,7 +5,7 @@ This modules contains tests for client.py file.
 import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
-import client
+from client import GithubOrgClient
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -22,13 +22,9 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         This test memoization and mocking in the org method of GithubOrgClient.
         """
-        # print(company)
-        # mock_response = Mock()
-        # mock_response.return_value = company_name
-        # mock_get.return_value = mock_response
         mock_get.return_value = company_name
         # Creates an instance of the GithubOrgClient class
-        organization = client.GithubOrgClient(company)
+        organization = GithubOrgClient(company)
         # print(organization)
         # I got the full htpps url of the Organisation
         url_name = (organization.ORG_URL.format(org=company))
