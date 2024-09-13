@@ -80,7 +80,7 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(client.org, mock_org.return_value)
         mock_org.assert_called_once_with(
             f"https://api.github.com/orgs/{org_name}")
-        
+
     def test_public_repos_url(self):
         """
         Test the `_public_repos_url` property of `GithubOrgClient`.
