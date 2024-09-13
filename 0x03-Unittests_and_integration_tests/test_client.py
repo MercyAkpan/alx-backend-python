@@ -45,8 +45,9 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_org.return_value = {
                 'repos_url': "https://api.github.com/users/google/repos",
             }
+            client = GithubOrgClient("google")
             self.assertEqual(
-                GithubOrgClient("google")._public_repos_url,
+                client._public_repos_url,
                 "https://api.github.com/users/google/repos",
             )
 
