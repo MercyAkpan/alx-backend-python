@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """
 Unit Testing for GithubOrgClient Class
 
@@ -33,40 +32,55 @@ class TestGithubOrgClient(unittest.TestCase):
     inputs, and manages exceptions appropriately.
     """
 
-    @parameterized.expand([
-        ("google", {"login": "google"}),
-        ("abc", {"login": "abc"})
-    ])
-    @patch('client.get_json')
-    def test_org(self, org, expected, mock_get_json):
-        """
-        Test the `org` method of `GithubOrgClient`.
+    # @parameterized.expand([
+    #     ("google", {"login": "google"}),
+    #     ("abc", {"login": "abc"})
+    # ])
+    # @patch('client.get_json')
+    # def test_org(self, org, expected, mock_get_json):
+    #     """
+    #     Test the `org` method of `GithubOrgClient`.
 
-        This test verifies that the `org` property of the `GithubOrgClient`
-        correctly returns the expected organization data. It uses the
-        `parameterized` decorator to run the test multiple times with
-        different inputs.
+    #     This test verifies that the `org` property of the `GithubOrgClient`
+    #     correctly returns the expected organization data. It uses the
+    #     `parameterized` decorator to run the test multiple times with
+    #     different inputs.
 
-        Args:
-            org (str): The name of the organization to retrieve.
-            expected (Dict[str, Any]): The expected dictionary returned by
-            `get_json`.
-            mock_get_json (Any): The mocked `get_json` function.
+    #     Args:
+    #         org (str): The name of the organization to retrieve.
+    #         expected (Dict[str, Any]): The expected dictionary returned by
+    #         `get_json`.
+    #         mock_get_json (Any): The mocked `get_json` function.
 
-        Asserts:
-            - The returned organization matches the expected dictionary.
-            - `get_json` is called with the correct URL.
-        """
-        mock_get_json.return_value = expected
+    #     Asserts:
+    #         - The returned organization matches the expected dictionary.
+    #         - `get_json` is called with the correct URL.
+    #     """
+    #     mock_get_json.return_value = expected
 
-        client = GithubOrgClient(org)
-        organisation = client.org
+    #     client = GithubOrgClient(org)
+    #     organisation = client.org
 
-        url = client.ORG_URL.format(org=org)
+    #     url = client.ORG_URL.format(org=org)
 
-        self.assertEqual(organisation, expected)
-        mock_get_json.assert_called_once_with(url)
+    #     self.assertEqual(organisation, expected)
+    #     mock_get_json.assert_called_once_with(url)
 
+    @parameterized.expand(
+            [
+                ("google",),
+                ("abc",),
+            ]
+        )
+    @patch("client.get_json")
+    def test_org(self, org_name, mock_org):
+        """Method ot test"""
+        client = GithubOrgClient(org_name)
+        mock_org.return_value = {"login": org_name}
+        self.assertEqual(client.org, mock_org.return_value)
+        mock_org.assert_called_once_with(
+            f"https://api.github.com/orgs/{org_name}")
+        
     def test_public_repos_url(self):
         """
         Test the `_public_repos_url` property of `GithubOrgClient`.
